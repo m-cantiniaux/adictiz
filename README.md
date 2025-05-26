@@ -17,7 +17,6 @@ Développer une application backend qui permet aux visiteurs de notre site d'upl
 - [Docker](https://docs.docker.com/get-docker/) installé
 - [DDEV](https://ddev.readthedocs.io/en/stable/) (installation automatique via script disponible)
 - [Composer](https://getcomposer.org/)
-- Un compte AWS avec un bucket S3 configuré
 
 ---
 
@@ -26,5 +25,36 @@ Développer une application backend qui permet aux visiteurs de notre site d'upl
 1. Cloner le dépôt
 
 ```bash
-git clone https://github.com/ton-compte/monprojet.git
-cd monprojet
+git clone https://github.com/m-cantiniaux/adictiz.git
+cd adictiz
+```
+
+2. Installer les dépendances PHP avec Composer
+
+```bash
+composer install
+```
+
+3. Démarrage de l’environnement avec DDEV
+
+```bash
+ddev start
+```
+
+4. Exécuter les migrations Doctrine pour créer la structure des tables :
+
+```bash
+ddev php bin/console doctrine:migrations:migrate
+```
+
+5. Charger les fixtures pour préremplir la base (User)
+
+```bash
+ddev php bin/console doctrine:fixtures:load
+```
+
+6. Login pour le test
+
+```bash
+max@bee-factory.be / adictiz
+```
