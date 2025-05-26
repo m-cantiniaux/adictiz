@@ -11,7 +11,32 @@
         </div>
     {% endif %}
 
-    <h1>Dashboard</h1>
+    <h1>Liste des images</h1>
 
-    {{dump(app.user)}}
+    <table>
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Filename</th>
+                <th>Uploadé le</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for image in images %}
+                <tr>
+                    <td>{{ image.id }}</td>
+                    <td><a href="{{ image.url }}" target="_blank">{{ image.filename }}</a></td>
+                    <td>{{ image.uploadedAt|date('Y-m-d H:i:s') }}</td>
+                </tr>
+            {% else %}
+                <tr><td colspan="4">Aucune image trouvée.</td></tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <div class="pagination">
+        {{ knp_pagination_render(images) }}
+    </div>
+
+
 {% endblock %}

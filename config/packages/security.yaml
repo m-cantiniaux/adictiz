@@ -23,7 +23,7 @@ security:
                 default_target_path: /dashboard
             logout:
                 path: app_logout
-                target: app_login
+                target: home
                 # where to redirect after logout
                 # target: app_any_route
 
