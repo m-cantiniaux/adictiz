@@ -67,3 +67,10 @@ AWS_SECRET_ACCESS_KEY=secretkey
 ```bash
 max@bee-factory.be / adictiz
 ```
+
+8. Utilisation de l'api pour upload via postman
+
+```bash
+- Ajouter une requête HTTP en POST, https://adictiz.ddev.site/api/images
+- Dans l'onglet body ajouter images[] dans form-data et uploader une ou plusieurs images
+```

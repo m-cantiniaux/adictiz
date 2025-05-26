@@ -23,6 +23,12 @@ class ImagesController extends AbstractController{
     public function upload(Request $request, LoggerInterface $logger): JsonResponse {
         $files = $request->files->get('images');
 
+        foreach ($files as $file) {
+            if (!in_array($file->getMimeType(), ['image/jpeg', 'image/png', 'image/jpg'])) {
+                return $this->json(['error' => 'Type de fichier non autorisé'], 400);
+            }
+        }
+
         if (!$files) {
             return $this->json(['error' => 'No files uploaded'], 400);
         }
