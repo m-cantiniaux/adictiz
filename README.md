@@ -14,8 +14,8 @@ Développer une application backend qui permet aux visiteurs de notre site d'upl
 
 ## Prérequis
 
-- [Docker](https://docs.docker.com/get-docker/) installé
-- [DDEV](https://ddev.readthedocs.io/en/stable/) (installation automatique via script disponible)
+- [Docker](https://docs.docker.com/get-docker/)
+- [DDEV](https://ddev.readthedocs.io/en/stable/)
 - [Composer](https://getcomposer.org/)
 
 ---
