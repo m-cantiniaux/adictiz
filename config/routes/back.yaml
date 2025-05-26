@@ -1,7 +1,13 @@
 app_login:
-    path: /
+    path: /login
     controller: App\Controller\LoginController::login
+    methods: [GET, POST]
 
 app_logout:
     path: /logout
     controller: App\Controller\LoginController::logout
+    methods: [GET]
+
+dashboard:
+    path: /dashboard
+    controller: App\Controller\DashboardController::index

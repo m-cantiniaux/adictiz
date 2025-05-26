@@ -1,0 +1,10 @@
+<h1>Uploader des images</h1>
+
+{{ form_start(form, {'attr': {'enctype': 'multipart/form-data'}}) }}
+    {{ form_row(form.images) }}
+    <button class="btn btn-primary">Uploader</button>
+{{ form_end(form) }}
+
+{% for message in app.flashes('success') %}
+    <div class="alert alert-success">{{ message }}</div>
+{% endfor %}
