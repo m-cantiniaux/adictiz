@@ -53,7 +53,16 @@ ddev php bin/console doctrine:migrations:migrate
 ddev php bin/console doctrine:fixtures:load
 ```
 
-6. Login pour le test
+6. Ajouter les variables d'environnement dans le fichier .env.local
+
+```bash
+AWS_BUCKET=votre-bucket
+AWS_REGION=region
+AWS_ACCESS_KEY_ID=accesskey
+AWS_SECRET_ACCESS_KEY=secretkey
+```
+
+7. Login pour le test
 
 ```bash
 max@bee-factory.be / adictiz
