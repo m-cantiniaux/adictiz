@@ -19,37 +19,40 @@ class UploadController extends AbstractController{
         $this->client = $client;
     }
     
-    public function upload(Request $request): Response{
-    
+    public function upload(Request $request): Response {
         $form = $this->createForm(UploadForm::class);
         $form->handleRequest($request);
 
-        if ($form->isSubmitted() && $form->isValid()) {
-            $files = $form->get('images')->getData();
+        if ($form->isSubmitted()) {
+            if ($form->isValid()) {
+                $files = $form->get('images')->getData();
 
-            $formData = [];
-            foreach ($files as $file) {
-                $formData['images'][] = DataPart::fromPath(
-                    $file->getPathname(),
-                    $file->getClientOriginalName()
-                );
-            }
-
-            $formDataPart = new FormDataPart($formData);
-
-            try {
-                $response = $this->client->request('POST', $this->generateUrl('api_images_upload', [], 0), [
-                    'headers' => $formDataPart->getPreparedHeaders()->toArray(),
-                    'body' => $formDataPart->bodyToIterable(),
-                ]);
-
-                if ($response->getStatusCode() !== 201) {
-                    $this->addFlash('error', 'Erreur lors de l\'upload via API');
-                } else {
-                    $this->addFlash('success', 'Images uploadées avec succès via API !');
+                $formData = [];
+                foreach ($files as $file) {
+                    $formData['images'][] = DataPart::fromPath(
+                        $file->getPathname(),
+                        $file->getClientOriginalName()
+                    );
                 }
-            } catch (\Exception $e) {
-                $this->addFlash('error', 'Exception lors de l\'appel API : ' . $e->getMessage());
+
+                $formDataPart = new FormDataPart($formData);
+
+                try {
+                    $response = $this->client->request('POST', $this->generateUrl('api_images_upload', [], 0), [
+                        'headers' => $formDataPart->getPreparedHeaders()->toArray(),
+                        'body' => $formDataPart->bodyToIterable(),
+                    ]);
+
+                    if ($response->getStatusCode() !== 201) {
+                        $this->addFlash('error', 'Erreur lors de l\'upload via API');
+                    } else {
+                        $this->addFlash('success', 'Images uploadées avec succès via API !');
+                    }
+                } catch (\Exception $e) {
+                    $this->addFlash('error', 'Exception lors de l\'appel API : ' . $e->getMessage());
+                }
+            } else {
+                $this->addFlash('error', 'Fichiers invalides. Veuillez uploader des images PNG ou JPG.');
             }
 
             return $this->redirectToRoute('home');
@@ -59,4 +62,5 @@ class UploadController extends AbstractController{
             'form' => $form->createView(),
         ]);
     }
+
 }

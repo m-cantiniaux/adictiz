@@ -39,7 +39,6 @@ class ImagesController extends AbstractController{
                 continue;
             }
 
-            // Récupère l'extension avec fallback
             $extension = $file->guessExtension() ?: $file->getClientOriginalExtension() ?: 'bin';
             $filename = uniqid('', true) . '.' . $extension;
 

@@ -8,10 +8,6 @@ app_logout:
     controller: App\Controller\LoginController::logout
     methods: [GET]
 
-test_s3:
-    path: /test
-    controller: App\Controller\LoginController::testS3
-
 dashboard:
     path: /dashboard
     controller: App\Controller\DashboardController::index
