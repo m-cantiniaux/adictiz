@@ -1,4 +1,4 @@
 api_images_upload:
     path: /api/images
     controller: App\Controller\ImagesController::upload
-    methods: [POST]
+    methods: [POST, OPTIONS]

@@ -10,6 +10,7 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 use Psr\Log\LoggerInterface;
+use App\Service\ImageUploader;
 
 class ImagesController extends AbstractController{
     private FilesystemOperator $storage;
@@ -20,62 +21,34 @@ class ImagesController extends AbstractController{
         $this->em = $em;
     }
 
-    public function upload(Request $request, LoggerInterface $logger): JsonResponse {
+    public function upload(Request $request, ImageUploader $uploader, LoggerInterface $logger): JsonResponse
+    {
         $files = $request->files->get('images');
-
-        foreach ($files as $file) {
-            if (!in_array($file->getMimeType(), ['image/jpeg', 'image/png', 'image/jpg'])) {
-                return $this->json(['error' => 'Type de fichier non autorisé'], 400);
-            }
-        }
 
         if (!$files) {
             return $this->json(['error' => 'No files uploaded'], 400);
         }
 
-        if (!$files instanceof \Traversable && !is_array($files)) {
+        if (!is_iterable($files)) {
             $files = [$files];
         }
 
+        $images = [];
         $uploaded = [];
-        $images = []; 
 
         foreach ($files as $file) {
-            if (!is_object($file)) {
-                continue;
+            $image = $uploader->upload($file);
+
+            if ($image) {
+                $images[] = $image;
             }
-
-            $extension = $file->guessExtension() ?: $file->getClientOriginalExtension() ?: 'bin';
-            $filename = uniqid('', true) . '.' . $extension;
-
-            $stream = fopen($file->getPathname(), 'rb');
-            if (!$stream) {
-                continue;
-            }
-
-            $result = $this->storage->writeStream($filename, $stream);
-            if (is_resource($stream)) {
-                fclose($stream);
-            }
-
-            $image = new Image();
-            $image->setFilename($filename);
-            $image->setUrl(sprintf(
-                'https://%s.s3.%s.amazonaws.com/%s',
-                $_ENV['AWS_BUCKET'],
-                $_ENV['AWS_REGION'],
-                $filename
-            ));
-
-            $this->em->persist($image);
-            $images[] = $image; 
-            
         }
 
         try {
             $this->em->flush();
         } catch (\Exception $e) {
-            $logger->error('Doctrinesss flush failed', ['exception' => $e]);
+            $logger->error('Doctrine flush failed', ['exception' => $e]);
+            return $this->json(['error' => 'Could not save to database'], 500);
         }
 
         foreach ($images as $image) {
