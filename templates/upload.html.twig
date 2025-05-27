@@ -29,13 +29,13 @@
             <h2>Admin</h2>
 
             {% if app.user %}
-                Bienvenue {{ app.user.userIdentifier }}, <a href="{{ path('app_logout') }}">Logout</a>
+                Bienvenue {{ app.user.userIdentifier }}, <a href="{{ path('app_logout') }}">se déconnecter</a>
                 <ul>
                     <li><a href="{{ path('dashboard') }}">Dashboard</a></li>
                 </ul>
             {% else %}
                 <ul>
-                    <li><a href="{{ path('app_login') }}">Login</a></li>
+                    <li><a href="{{ path('app_login') }}">Connexion</a></li>
                 </ul>
             {% endif %}
         </div>

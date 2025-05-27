@@ -13,7 +13,7 @@
         public function buildForm(FormBuilderInterface $builder, array $options) {
             $builder
                 ->add('images', FileType::class, [
-                    'label' => 'Upload Images',
+                    'label' => 'Images (jpeg, png)',
                     'multiple' => true,
                     'mapped' => false,
                     'required' => true,
